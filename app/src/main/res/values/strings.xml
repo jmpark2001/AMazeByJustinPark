@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">AMazeByJustinPark</string>
+    <string name="title">Secure The Bag</string>
+    <string name="size">Size</string>
+    <string name="rooms">Rooms?</string>
+    <string name="algorithm">Algorithm</string>
+    <string name="on">On</string>
+    <string-array name="algorithm_spinner">
+        <item>DFS</item>
+        <item>Prim</item>
+        <item>Boruvka</item>
+    </string-array>
+    <string name="revisit">Revisit</string>
+    <string name="explore">Explore</string>
 </resources>
