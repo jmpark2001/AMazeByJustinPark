@@ -48,4 +48,9 @@
     <string name="pause">Pause</string>
     <string name="lose">You Lost!</string>
     <string name="win">You Won!</string>
+    <string name="pathLength">Path Length:</string>
+    <string name="energyConsumption">Energy Consumption:</string>
+    <string name="restart">Click Back to Restart the Game</string>
+    <string name="shortest">Shortest Path:</string>
+
 </resources>
