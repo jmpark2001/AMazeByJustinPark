@@ -40,4 +40,12 @@
     <string name="right">Right</string>
     <string name="up">Up</string>
     <string name="jump">Jump</string>
+    <string name="energy">Energy/Time</string>
+    <string name="go2winning">Go2Winning</string>
+    <string name="go2losing">Go2Losing</string>
+    <string name="speed">Speed</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="lose">You Lost!</string>
+    <string name="win">You Won!</string>
 </resources>
