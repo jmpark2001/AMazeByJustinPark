@@ -114,6 +114,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         intent.putExtra("chosenDriver", driverSelected);
         intent.putExtra("chosenSensor", sensorTypeChosen);
         startActivity(intent);
+        finish();
     }
 
     public void playAutomaticActivity() {
@@ -121,6 +122,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         driverSpinner.setVisibility(View.GONE);
         intent.putExtra("USER_CHOICE_DRIVER", driverSelected);
         startActivity(intent);
+        finish();
     }
 
     @Override
