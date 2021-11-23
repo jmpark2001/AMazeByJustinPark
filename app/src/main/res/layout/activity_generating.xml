@@ -11,8 +11,8 @@
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:text="@string/select_driver"
-        android:textSize="32sp"
         android:textAlignment="center"
+        android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.54"
@@ -48,20 +48,11 @@
         app:layout_constraintVertical_bias="0.745" />
 
     <Spinner
+        android:id="@+id/robot_spinner"
         android:layout_width="120dp"
         android:layout_height="48dp"
-        android:entries="@array/driver_spinner"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.66" />
-
-    <Spinner
-        android:layout_width="120dp"
-        android:layout_height="48dp"
-        android:entries="@array/robot_spinner"
+        android:entries="@array/robot_spinner_choices"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -83,16 +74,43 @@
         app:layout_constraintVertical_bias="0.383" />
 
     <Button
-        android:id="@+id/ready"
+        android:id="@+id/manual_ready"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ready"
+        android:text="@string/manual_ready"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.127"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95" />
+        app:layout_constraintVertical_bias="0.669" />
+
+    <Button
+        android:id="@+id/WallFollowerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wallFollower"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.539"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.669" />
+
+    <Button
+        android:id="@+id/wizard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wizard"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.917"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.669" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,17 +14,20 @@
     <string name="explore">Explore</string>
     <string name="select_driver">Select a Driver</string>
     <string name="select_robot">Select Robot Configurations</string>
-    <string-array name="driver_spinner">
+    <string-array name="driver_spinner_choices">
         <item>Manual</item>
         <item>Wall Follower</item>
         <item>Wizard</item>
     </string-array>
-    <string-array name="robot_spinner">
+    <string-array name="robot_spinner_choices">
+        <item>Select</item>
         <item>Premium</item>
         <item>Mediocre</item>
         <item>SoSo</item>
         <item>Shaky</item>
     </string-array>
     <string name="progress">Maze Being Generated</string>
-    <string name="ready">Ready</string>
+    <string name="manual_ready">Manual</string>
+    <string name="wallFollower">Wall Follower</string>
+    <string name="wizard">Wizard</string>
 </resources>
