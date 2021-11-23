@@ -98,7 +98,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         }
         else{
             Log.v(TAG, "User Input");
-            Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Waiting for maze to generate", Toast.LENGTH_SHORT).show();
             if(driverSelected.equals("Manual")){
                 playManuallyActivity();
             }
