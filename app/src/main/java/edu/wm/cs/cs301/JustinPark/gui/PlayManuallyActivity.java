@@ -18,17 +18,18 @@ public class PlayManuallyActivity extends AppCompatActivity {
     private static final String TAG = "PlayManuallyActivity";
     private Button up, left, right, jump, shortcut;
     private Switch map, solution, walls;
+    MazePanel panel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_manually);
 
+        panel = findViewById(R.id.mazePanel);
         up = (Button) findViewById(R.id.up);
         left = (Button) findViewById(R.id.left);
         right = (Button) findViewById(R.id.right);
         jump = (Button) findViewById(R.id.jump);
-        shortcut = (Button) findViewById(R.id.ShortCut);
 
         map = findViewById(R.id.mapSwitch);
         map.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -95,15 +96,6 @@ public class PlayManuallyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.v(TAG, "Jump Button Clicked");
                 Toast.makeText(getBaseContext(), "Jump", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        shortcut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.v(TAG, "ShortCut Button Clicked");
-                Toast.makeText(getBaseContext(), "ShortCut", Toast.LENGTH_SHORT).show();
-                playWinningActivity();
             }
         });
     }
