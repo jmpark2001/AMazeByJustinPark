@@ -43,7 +43,7 @@ public interface P5PanelF21 {
      * @param extensionX is the wall's length and direction (sign), horizontal dimension
      * @return the rgb value for the color of the wall
      */
-    static Color getWallColor(int distance, int cc, int extensionX) {
+    static int getWallColor(int distance, int cc, int extensionX) {
         final int d = distance / 4;
         // mod used to limit the number of colors to 6
         final int part1 = distance & 7;
@@ -73,7 +73,7 @@ public interface P5PanelF21 {
             default:
                 color = Color.valueOf(RGB_DEF, RGB_DEF, RGB_DEF);
         }
-        return color;
+        return color.toArgb();
     }
 
 
