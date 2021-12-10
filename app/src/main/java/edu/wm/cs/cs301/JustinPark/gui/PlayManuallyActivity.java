@@ -13,12 +13,20 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import edu.wm.cs.cs301.JustinPark.R;
+import edu.wm.cs.cs301.JustinPark.generation.Singleton;
 
 public class PlayManuallyActivity extends AppCompatActivity {
     private static final String TAG = "PlayManuallyActivity";
     private Button up, left, right, jump, shortcut;
     private Switch map, solution, walls;
     MazePanel panel;
+    Robot robot = new ReliableRobot();
+    RobotDriver manualDriver = new ManualDriver();
+    ReliableSensor leftSensor = new ReliableSensor();
+    ReliableSensor rightSensor = new ReliableSensor();
+    ReliableSensor frontSensor = new ReliableSensor();
+    ReliableSensor backSensor = new ReliableSensor();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +34,23 @@ public class PlayManuallyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play_manually);
 
         panel = findViewById(R.id.mazePanel);
+        robot.setBatteryLevel(3500);
+        Singleton.state.setMazeConfiguration(Singleton.mazeConfig);
+        leftSensor.setMaze(Singleton.state.getMazeConfiguration());
+        rightSensor.setMaze(Singleton.state.getMazeConfiguration());
+        frontSensor.setMaze(Singleton.state.getMazeConfiguration());
+        robot.addDistanceSensor(leftSensor, Robot.Direction.LEFT);
+        robot.addDistanceSensor(rightSensor, Robot.Direction.RIGHT);
+        robot.addDistanceSensor(frontSensor, Robot.Direction.FORWARD);
+        robot.addDistanceSensor(backSensor, Robot.Direction.BACKWARD);
+        manualDriver.setRobot(robot);
+        Singleton.state.start(panel);
         up = (Button) findViewById(R.id.up);
         left = (Button) findViewById(R.id.left);
         right = (Button) findViewById(R.id.right);
         jump = (Button) findViewById(R.id.jump);
+
+
 
         map = findViewById(R.id.mapSwitch);
         map.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -70,6 +91,10 @@ public class PlayManuallyActivity extends AppCompatActivity {
         up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                robot.move(1);
+                if(Singleton.isOutside){
+                    playWinningActivity();
+                }
                 Log.v(TAG, "Up Button Clicked");
                 Toast.makeText(getBaseContext(), "Up", Toast.LENGTH_SHORT).show();
             }
@@ -78,6 +103,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                robot.rotate(Robot.Turn.LEFT);
                 Log.v(TAG, "Left Button Clicked");
                 Toast.makeText(getBaseContext(), "Left", Toast.LENGTH_SHORT).show();
             }
@@ -86,6 +112,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                robot.rotate(Robot.Turn.RIGHT);
                 Log.v(TAG, "Right Button Clicked");
                 Toast.makeText(getBaseContext(), "Right", Toast.LENGTH_SHORT).show();
             }
@@ -94,6 +121,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         jump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                robot.jump();
                 Log.v(TAG, "Jump Button Clicked");
                 Toast.makeText(getBaseContext(), "Jump", Toast.LENGTH_SHORT).show();
             }
