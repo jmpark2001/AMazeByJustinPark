@@ -1,6 +1,17 @@
 package edu.wm.cs.cs301.JustinPark.gui;
 
 import edu.wm.cs.cs301.JustinPark.R;
+import edu.wm.cs.cs301.JustinPark.generation.Factory;
+import edu.wm.cs.cs301.JustinPark.generation.Maze;
+import edu.wm.cs.cs301.JustinPark.generation.MazeFactory;
+import edu.wm.cs.cs301.JustinPark.generation.Order;
+import edu.wm.cs.cs301.JustinPark.generation.Singleton;
+import edu.wm.cs.cs301.JustinPark.generation.StubOrder;
+
+import static edu.wm.cs.cs301.JustinPark.generation.Order.Builder.DFS;
+import static edu.wm.cs.cs301.JustinPark.generation.Order.Builder.Prim;
+import static edu.wm.cs.cs301.JustinPark.generation.Order.Builder.Boruvka;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +27,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class GeneratingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+import java.util.Random;
+
+public class GeneratingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, Order{
 
     // Instantiate variables
     public Button manualButton;
@@ -34,6 +47,14 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     private Handler mazeHandler = new Handler();
     private int progress = 0;
 
+    private boolean hasRoom, hasStarted;
+    private int skillLevel;
+    private int seed = 13;
+    private Order.Builder builder;
+    private String driver, algorithm;
+
+    Factory factory = new MazeFactory();
+
     // TAG for logcat messages
     private static final String TAG = "GeneratingActivity";
 
@@ -41,6 +62,23 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generating);
+
+        Intent intent = getIntent();
+        algorithm = intent.getStringExtra(AMazeActivity.ALGORITHM);
+        skillLevel = intent.getIntExtra(AMazeActivity.MAZE_SIZE, 0);
+        hasRoom = intent.getBooleanExtra(AMazeActivity.ROOMS, false);
+
+        switch(algorithm){
+            case "DFS":
+                builder = DFS;
+                break;
+            case "Prim":
+                builder = Prim;
+                break;
+            case "Boruvka":
+                builder = Boruvka;
+                break;
+        }
 
         // create variables for widgets
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -143,6 +181,49 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     public void runBackgroundThread() {
         mazeRunnable runnable = new mazeRunnable();
         new Thread(runnable).start();
+    }
+
+    public void start(){
+        Singleton.isOutside = false;
+        Singleton.state = new StatePlaying();
+        hasStarted = true;
+        factory = new MazeFactory();
+        Random random = new Random();
+        seed = Math.abs(random.nextInt());
+        StubOrder stubOrder = new StubOrder(skillLevel, builder, hasRoom, seed);
+        factory.order(stubOrder);
+        factory.waitTillDelivered();
+        deliver(stubOrder.getMaze());
+    }
+
+    @Override
+    public int getSkillLevel() {
+        return skillLevel;
+    }
+
+    @Override
+    public Builder getBuilder() {
+        return builder;
+    }
+
+    @Override
+    public boolean isPerfect() {
+        return hasRoom;
+    }
+
+    @Override
+    public int getSeed() {
+        return seed;
+    }
+
+    @Override
+    public void deliver(Maze mazeConfig) {
+        Singleton.mazeConfig = mazeConfig;
+    }
+
+    @Override
+    public void updateProgress(int percentage) {
+        progressBar.setProgress(percentage);
     }
 
     class mazeRunnable implements Runnable {
