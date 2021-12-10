@@ -31,6 +31,7 @@ public class Map {
     final int viewHeight; // set to Constants.VIEW_HEIGHT
     final int mapUnit;    // set to Constants.MAP_UNIT
     final int stepSize;  // set to Constants.STEP_SIZE, typical value: map_unit/4
+    MazePanel panel;
 
     /**
      * The user can increment or decrement the scale of the map.
@@ -65,10 +66,11 @@ public class Map {
      * @param mapScale gives the current scale, must be greater or equal 1
      * @param maze gives the current maze, must be non-null, a fully functional maze
      */
-    public Map(int width, int height, int mapUnit, int stepSize, Floorplan seenWalls, int mapScale, Maze maze){
+    public Map(MazePanel panel, int width, int height, int mapUnit, int stepSize, Floorplan seenWalls, int mapScale, Maze maze){
         //System.out.println("MapDrawer: constructor called") ;
         viewWidth = width ;
         viewHeight = height ;
+        this.panel = panel;
         this.mapUnit = mapUnit ;
         this.stepSize = stepSize ;
         this.seenWalls = seenWalls ;
@@ -86,8 +88,8 @@ public class Map {
      * @param mapScale gives the current scale, must be greater or equal 1
      * @param maze gives the current maze, must be non-null, a fully functional maze
      */
-    public Map(Floorplan seenWalls, int mapScale, Maze maze){
-        this(Constants.VIEW_WIDTH,Constants.VIEW_HEIGHT,Constants.MAP_UNIT,
+    public Map(MazePanel panel, Floorplan seenWalls, int mapScale, Maze maze){
+        this(panel, Constants.VIEW_WIDTH,Constants.VIEW_HEIGHT,Constants.MAP_UNIT,
                 Constants.STEP_SIZE, seenWalls, mapScale, maze);
     }
 
