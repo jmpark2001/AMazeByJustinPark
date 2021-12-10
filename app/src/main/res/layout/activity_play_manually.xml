@@ -160,8 +160,8 @@
 
     <edu.wm.cs.cs301.JustinPark.gui.MazePanel
         android:id="@+id/mazePanel"
-        android:layout_width="418dp"
-        android:layout_height="370dp"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
