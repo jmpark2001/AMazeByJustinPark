@@ -42,23 +42,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 }
             }
         });
-
-        win = (Button) findViewById(R.id.button);
-        win.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.v(TAG, "Go to win");
-                openWinningActivity();
-            }
-        });
-        lose = (Button) findViewById(R.id.button4);
-        lose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.v(TAG, "Go to win");
-                openLosingActivity();
-            }
-        });
     }
 
     public void openWinningActivity() {
