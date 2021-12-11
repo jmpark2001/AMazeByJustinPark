@@ -2,6 +2,7 @@ package edu.wm.cs.cs301.JustinPark.gui;
 
 import edu.wm.cs.cs301.JustinPark.generation.CardinalDirection;
 import edu.wm.cs.cs301.JustinPark.generation.Maze;
+import edu.wm.cs.cs301.JustinPark.generation.Singleton;
 import edu.wm.cs.cs301.JustinPark.gui.Robot.Direction;
 
 /**
@@ -44,33 +45,33 @@ public class ReliableSensor implements DistanceSensor{
         int y = currentPosition[1];
         int distToObstacle = 0;
         while(true) {
-            if(x < 0 || y < 0 || x >= myMaze.getWidth() || y >= myMaze.getHeight()) {
-                throw new IndexOutOfBoundsException();
+            if(x < 0 || y < 0 || x >= Singleton.mazeConfig.getWidth() || y >= Singleton.mazeConfig.getHeight()) {
+                return Integer.MAX_VALUE;
             }
             switch(currentDirection) {
                 case East:
-                    if(myMaze.getFloorplan().hasWall(x, y, CardinalDirection.East) == true) {
+                    if(Singleton.mazeConfig.getFloorplan().hasWall(x, y, CardinalDirection.East)) {
                         return distToObstacle;
                     }
                     x++;
                     break;
 
                 case West:
-                    if(myMaze.getFloorplan().hasWall(x, y, CardinalDirection.West) == true) {
+                    if(Singleton.mazeConfig.getFloorplan().hasWall(x, y, CardinalDirection.West)) {
                         return distToObstacle;
                     }
                     x--;
                     break;
 
                 case North:
-                    if(myMaze.getFloorplan().hasWall(x, y, CardinalDirection.South) == true) {
+                    if(Singleton.mazeConfig.getFloorplan().hasWall(x, y, CardinalDirection.South)) {
                         return distToObstacle;
                     }
                     y++;
                     break;
 
                 case South:
-                    if(myMaze.getFloorplan().hasWall(x, y, CardinalDirection.North) == true) {
+                    if(Singleton.mazeConfig.getFloorplan().hasWall(x, y, CardinalDirection.North)) {
                         return distToObstacle;
                     }
                     y--;

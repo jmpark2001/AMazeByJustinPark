@@ -23,8 +23,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
     private Switch map, solution, walls;
     private Button play, pause;
     private ProgressBar energy;
-    private Button win;
-    private Button lose;
     private Handler handler = new Handler();
     private String driver;
     MazePanel panel;
@@ -63,9 +61,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_animation);
 
-        energy = (ProgressBar) findViewById(R.id.progressBar);
-//        energy.setProgress(3500);
-
         panel = findViewById(R.id.mazePanel);
         Intent intent = getIntent();
         driver = intent.getStringExtra(GeneratingActivity.DRIVER);
@@ -75,10 +70,14 @@ public class PlayAnimationActivity extends AppCompatActivity {
         leftSensor.setMaze(Singleton.state.getMazeConfiguration());
         rightSensor.setMaze(Singleton.state.getMazeConfiguration());
         frontSensor.setMaze(Singleton.state.getMazeConfiguration());
+        backSensor.setMaze(Singleton.state.getMazeConfiguration());
         robot.addDistanceSensor(leftSensor, Robot.Direction.LEFT);
         robot.addDistanceSensor(rightSensor, Robot.Direction.RIGHT);
         robot.addDistanceSensor(frontSensor, Robot.Direction.FORWARD);
         robot.addDistanceSensor(backSensor, Robot.Direction.BACKWARD);
+        energy = (ProgressBar) findViewById(R.id.energy);
+        energy.setProgress(3500);
+
         if(driver.equals("WallFollower")){
             robotDriver = new WallFollower();
         }

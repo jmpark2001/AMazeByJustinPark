@@ -46,13 +46,13 @@ public class WallFollower implements RobotDriver{
      */
     @Override
     public boolean drive2Exit() throws Exception {
-        while(robot.isAtExit() != true) {
+        while(!robot.isAtExit()) {
             if(robot.hasStopped()) {
                 throw new Exception();
             }
             drive1Step2Exit();
         }
-        if(robot.isAtExit() != true) {
+        if(!robot.isAtExit()) {
             return false;
         }
         if(robot.canSeeThroughTheExitIntoEternity(Direction.RIGHT)) {
@@ -75,25 +75,34 @@ public class WallFollower implements RobotDriver{
      */
     @Override
     public boolean drive1Step2Exit() throws Exception {
-        if(robot.hasStopped()) {
-            throw new Exception();
-        }
         int leftDist = robot.distanceToObstacle(Direction.LEFT);
+        System.out.println(leftDist);
         int frontDist = robot.distanceToObstacle(Direction.FORWARD);
-        if(leftDist != 0) {
-            robot.rotate(Turn.LEFT);
-            robot.move(1);
-            return true;
-        }
-        if(frontDist != 0) {
-            robot.move(1);
-            return true;
+        if (!robot.isAtExit()) {
+            if (robot.hasStopped()) {
+                throw new Exception();
+            }
+            if (leftDist != 0) {
+                robot.rotate(Turn.LEFT);
+                robot.move(1);
+                return true;
+            }
+            if (frontDist != 0) {
+                robot.move(1);
+                return true;
+            }
+            else {
+                robot.rotate(Turn.RIGHT);
+            }
         }
         else {
-            robot.rotate(Turn.RIGHT);
-        }
-        if(robot.isAtExit()) {
-            return false;
+            if (robot.canSeeThroughTheExitIntoEternity(Direction.RIGHT)){
+                robot.rotate(Turn.RIGHT);
+            }
+            if (robot.canSeeThroughTheExitIntoEternity(Direction.LEFT)){
+                robot.rotate(Turn.LEFT);
+            }
+            robot.move(1);
         }
         return true;
     }

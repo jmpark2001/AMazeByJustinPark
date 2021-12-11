@@ -149,7 +149,7 @@ public class FirstPersonView {
      */
     public void draw(MazePanel panel, int x, int y, int walkStep, int ang, float percentToExit) {
         // viewers draw on the buffer graphics
-        if (panel.isOperational() == false) {
+        if (!panel.isOperational()) {
             System.out.println("FirstPersonDrawer.draw: can't get graphics object to draw on, skipping redraw operation") ;
             return;
         }

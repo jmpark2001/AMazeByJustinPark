@@ -96,9 +96,7 @@ public class ReliableRobot implements Robot {
             }
         }
         if(direction == Direction.RIGHT) {
-            if(rightSensor != null) {
-                return true;
-            }
+            return rightSensor != null;
         }
         return false;
     }
@@ -239,7 +237,7 @@ public class ReliableRobot implements Robot {
         int newDistance = 0;
         if(energy[0] >= 1.0f) {
             newDistance = distanceToObstacle(Direction.FORWARD);
-            while(distance >= 1 && hasStopped == false) {
+            while(distance >= 1 && !hasStopped) {
                 try {
                     curPosition = getCurrentPosition();
                 }
@@ -293,16 +291,13 @@ public class ReliableRobot implements Robot {
         try {
             x = getCurrentPosition()[0];
             y = getCurrentPosition()[1];
-            distance = Singleton.state.getMazeConfiguration().getDistanceToExit(x, y);
+            distance = Singleton.state.mazeConfig.getDistanceToExit(x, y);
         }
         catch (Exception e){
             System.out.println("Error in isAtExit");
             return false;
         }
-        if(distance == 1) {
-            return true;
-        }
-        return false;
+        return distance == 1;
     }
 
     /*
@@ -337,10 +332,7 @@ public class ReliableRobot implements Robot {
          * Returns the boolean assigned to this method
          * The boolean may be changed in other methods
          */
-        if(hasStopped == true) {
-            return true;
-        }
-        return false;
+        return hasStopped;
     }
 
     /*
@@ -358,19 +350,15 @@ public class ReliableRobot implements Robot {
          * Call and return the reliable sensor's method to find the
          * distance to obstacle
          */
-        if(this.isAtExit() == true) {
-            return Integer.MAX_VALUE;
-        }
-        if(this.hasSensor(direction) == true) {
+        if(this.hasSensor(direction)) {
             CardinalDirection newDirection = curDirection;
             int distToObstacle = 0;
-            switch(direction) {
+            switch (direction) {
                 case FORWARD:
                     newDirection = curDirection;
                     try {
                         distToObstacle = frontSensor.distanceToObstacle(this.getCurrentPosition(), newDirection, energy);
-                    }
-                    catch (Exception e3) {
+                    } catch (Exception e3) {
                         e3.printStackTrace();
                     }
                     break;
@@ -379,8 +367,7 @@ public class ReliableRobot implements Robot {
                     newDirection = curDirection.rotateClockwise();
                     try {
                         distToObstacle = rightSensor.distanceToObstacle(this.getCurrentPosition(), newDirection, energy);
-                    }
-                    catch (Exception e3){
+                    } catch (Exception e3) {
                         e3.printStackTrace();
                     }
                     break;
@@ -389,8 +376,7 @@ public class ReliableRobot implements Robot {
                     newDirection = curDirection.oppositeDirection();
                     try {
                         distToObstacle = backSensor.distanceToObstacle(this.getCurrentPosition(), newDirection, energy);
-                    }
-                    catch (Exception e3) {
+                    } catch (Exception e3) {
                         e3.printStackTrace();
                     }
                     break;
@@ -398,26 +384,25 @@ public class ReliableRobot implements Robot {
                 case LEFT:
                     if (newDirection == CardinalDirection.North) {
                         newDirection = CardinalDirection.West;
-                    }
-                    else if (newDirection == CardinalDirection.South) {
+                    } else if (newDirection == CardinalDirection.South) {
                         newDirection = CardinalDirection.East;
-                    }
-                    else if (newDirection == CardinalDirection.East) {
+                    } else if (newDirection == CardinalDirection.East) {
                         newDirection = CardinalDirection.North;
-                    }
-                    else if (newDirection == CardinalDirection.West) {
+                    } else if (newDirection == CardinalDirection.West) {
                         newDirection = CardinalDirection.South;
-                    }				try {
-                    distToObstacle = leftSensor.distanceToObstacle(this.getCurrentPosition(), newDirection, energy);
-                }
-                catch (Exception e3) {
-                    e3.printStackTrace();
-                }
+                    }
+                    try {
+                        distToObstacle = leftSensor.distanceToObstacle(this.getCurrentPosition(), newDirection, energy);
+                    } catch (Exception e3) {
+                        e3.printStackTrace();
+                    }
                     break;
             }
             return distToObstacle;
         }
-        return 0;
+        else{
+            throw new UnsupportedOperationException();
+        }
     }
 
     /*
@@ -431,10 +416,10 @@ public class ReliableRobot implements Robot {
          * and direction is infinity
          * Return true if it is
          */
-        if(hasSensor(direction) == true && distanceToObstacle(direction) == Integer.MAX_VALUE) {
+        if(hasSensor(direction) && distanceToObstacle(direction) == Integer.MAX_VALUE) {
             return true;
         }
-        if(hasSensor(direction) == false) {
+        if(!hasSensor(direction)) {
             throw new UnsupportedOperationException();
         }
         return false;

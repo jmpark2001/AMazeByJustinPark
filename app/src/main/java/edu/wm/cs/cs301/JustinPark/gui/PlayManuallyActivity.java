@@ -41,6 +41,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         leftSensor.setMaze(Singleton.state.getMazeConfiguration());
         rightSensor.setMaze(Singleton.state.getMazeConfiguration());
         frontSensor.setMaze(Singleton.state.getMazeConfiguration());
+        backSensor.setMaze(Singleton.state.getMazeConfiguration());
         robot.addDistanceSensor(leftSensor, Robot.Direction.LEFT);
         robot.addDistanceSensor(rightSensor, Robot.Direction.RIGHT);
         robot.addDistanceSensor(frontSensor, Robot.Direction.FORWARD);
