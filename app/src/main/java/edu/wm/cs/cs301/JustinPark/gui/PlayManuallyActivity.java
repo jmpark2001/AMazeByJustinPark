@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.TintableCompoundDrawablesView;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
     public static final String ENERGY_USED = "edu.wm.cs.cs301.JustinPark.ENERGY_USED";
     private Button up, left, right, jump, shortcut;
     private Switch map, solution, walls;
+    private MediaPlayer mediaPlayer;
     MazePanel panel;
     Robot robot = new ReliableRobot();
     RobotDriver manualDriver = new ManualDriver();
@@ -34,6 +36,10 @@ public class PlayManuallyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_manually);
+
+        mediaPlayer = MediaPlayer.create(PlayManuallyActivity.this, R.raw.holly);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
 
         panel = findViewById(R.id.mazePanel);
         robot.setBatteryLevel(3500);
@@ -130,6 +136,25 @@ public class PlayManuallyActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Jump", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        mediaPlayer.start();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        mediaPlayer.pause();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        mediaPlayer.stop();
+        mediaPlayer.release();
     }
 
     private void playWinningActivity(){
