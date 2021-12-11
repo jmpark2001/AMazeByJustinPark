@@ -46,8 +46,8 @@
     <string name="speed">Speed</string>
     <string name="play">Play</string>
     <string name="pause">Pause</string>
-    <string name="lose">You Lost!</string>
-    <string name="win">You Won!</string>
+    <string name="lose">You Ran Out of Energy and Couldn\'t Bring Back All the Gifts From the Grinch!</string>
+    <string name="win">Congrats! You Stopped the Grinch From Ruining Christmas!</string>
     <string name="pathLength">Path Length:</string>
     <string name="energyConsumption">Energy Consumption:</string>
     <string name="restart">Click Back to Restart the Game</string>
