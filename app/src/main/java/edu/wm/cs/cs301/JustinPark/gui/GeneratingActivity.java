@@ -29,7 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Random;
 
-public class GeneratingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, Order{
+public class GeneratingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, Order {
 
     // Instantiate variables
     public Button manualButton;
@@ -68,7 +68,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         skillLevel = intent.getIntExtra(AMazeActivity.MAZE_SIZE, 0);
         hasRoom = intent.getBooleanExtra(AMazeActivity.ROOMS, false);
 
-        switch(algorithm){
+        switch (algorithm) {
             case "DFS":
                 builder = DFS;
                 break;
@@ -94,7 +94,8 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         driverSpinner.setOnItemSelectedListener(this);
 
         // Start thread
-        runBackgroundThread();
+        //runBackgroundThread();
+        threadActivity(progressBar);
 
         // Manual button pressed
         manualButton.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +103,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
             public void onClick(View v) {
                 driverSelected = "Manual";
                 driverIsSelected = true;
-                if(startButton){
+                if (startButton) {
                     playManuallyActivity();
                 }
             }
@@ -118,7 +119,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         });
 
         // WallFollower button pressed
-        wallFollowerButton.setOnClickListener(new View.OnClickListener(){
+        wallFollowerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 driverSpinner.setVisibility(View.VISIBLE);
@@ -129,18 +130,16 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     }
 
     public void retrieveChoices() {
-        if(!driverIsSelected){
+        if (!driverIsSelected) {
             Log.v(TAG, "Default");
             Toast.makeText(getApplicationContext(), "Choose a Driver", Toast.LENGTH_SHORT).show();
             startButton = true;
-        }
-        else{
+        } else {
             Log.v(TAG, "User Input");
             Toast.makeText(getApplicationContext(), "Waiting for maze to generate", Toast.LENGTH_SHORT).show();
-            if(driverSelected.equals("Manual")){
+            if (driverSelected.equals("Manual")) {
                 playManuallyActivity();
-            }
-            else if(!sensorTypeChosen.equals("Select")){
+            } else if (!sensorTypeChosen.equals("Select")) {
                 playAutomaticActivity();
             }
         }
@@ -168,7 +167,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         sensorTypeChosen = parent.getItemAtPosition(pos).toString();
         driverIsSelected = true;
         Toast.makeText(getApplicationContext(), sensorTypeChosen, Toast.LENGTH_SHORT).show();
-        if(!sensorTypeChosen.equals("Select") && threadIsDone){
+        if (!sensorTypeChosen.equals("Select") && threadIsDone) {
             playAutomaticActivity();
         }
     }
@@ -178,12 +177,13 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
 
     }
 
+    /*
     public void runBackgroundThread() {
         mazeRunnable runnable = new mazeRunnable();
         new Thread(runnable).start();
     }
-
-    public void start(){
+    */
+    public void start() {
         Singleton.isOutside = false;
         Singleton.state = new StatePlaying();
         hasStarted = true;
@@ -226,35 +226,39 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         progressBar.setProgress(percentage);
     }
 
-    class mazeRunnable implements Runnable {
-        @Override
-        public void run() {
-            for (int i = 0; i < 100; i++) {
-                Log.v(TAG, "Thread began: " + i);
-                try {
-                    Thread.sleep(50);
-                    progress += 1;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+    //class mazeRunnable implements Runnable {
+    private void threadActivity(ProgressBar progressBar) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 100; i++) {
+                    Log.v(TAG, "Thread began: " + i);
+                    try {
+                        Thread.sleep(50);
+                        progress += 1;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    mazeHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setProgress(progress);
+                            if (progress == 100) {
+                                textView.setText("Generation Finished");
+                            }
+                        }
+                    });
                 }
                 mazeHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setProgress(progress);
-                        if (progress == 100) {
-                            textView.setText("Generation Finished");
-                        }
+                        Log.v(TAG, "hello there");
+                        retrieveChoices();
+                        threadIsDone = true;
+                        start();
                     }
                 });
             }
-            mazeHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    Log.v(TAG, "hello there");
-                    retrieveChoices();
-                    threadIsDone = true;
-                }
-            });
-        }
+        }).start();
     }
 }

@@ -71,7 +71,6 @@ public class FirstPersonView {
      * with the current buffer image is the responsibility of
      * the StatePlaying class.
      */
-    private MazePanel mazePanel;
 
     /**
      * The current position (x,y) scaled by map_unit and
@@ -150,7 +149,7 @@ public class FirstPersonView {
      */
     public void draw(MazePanel panel, int x, int y, int walkStep, int ang, float percentToExit) {
         // viewers draw on the buffer graphics
-        if (mazePanel.isOperational() == false) {
+        if (panel.isOperational() == false) {
             System.out.println("FirstPersonDrawer.draw: can't get graphics object to draw on, skipping redraw operation") ;
             return;
         }
@@ -172,7 +171,7 @@ public class FirstPersonView {
         traverseNodeCounter = traverseWallSectorCounter =
                 drawRectCounter = drawRectLateCounter = drawRectWallCounter = 0;
         //
-        drawAllVisibleSectors(bspRoot);
+        drawAllVisibleSectors(panel, bspRoot);
     }
 
 
@@ -204,12 +203,12 @@ public class FirstPersonView {
      * where the bounding box is visible
      * @param node is the current node of interest
      */
-    private void drawAllVisibleSectors(BSPNode node) {
+    private void drawAllVisibleSectors(MazePanel panel, BSPNode node) {
         traverseNodeCounter++; // debug
 
         // Anchor, stop recursion at leaf nodes
         if (node.isIsleaf()) {
-            drawAllWallsOfASector((BSPLeaf) node);
+            drawAllWallsOfASector(panel, (BSPLeaf) node);
             return;
         }
 
@@ -232,15 +231,15 @@ public class FirstPersonView {
         // if dot >= 0 consider right node before left node
         BSPNode right = n.getRightBranch();
         if ((dot >= 0) && (boundingBoxIsVisible(right))) {
-            drawAllVisibleSectors(right);
+            drawAllVisibleSectors(panel, right);
         }
         // consider left node
         BSPNode left = n.getLeftBranch();
         if (boundingBoxIsVisible(left))
-            drawAllVisibleSectors(left);
+            drawAllVisibleSectors(panel, left);
         // if dot < 0 consider right node now (after left node)
         if ((dot < 0) && (boundingBoxIsVisible(right))) {
-            drawAllVisibleSectors(right);
+            drawAllVisibleSectors(panel, right);
         }
         nesting--; // debug
     }
@@ -350,7 +349,7 @@ public class FirstPersonView {
      * Traverses all walls of this leaf and draws corresponding rectangles on screen
      * @param node is the leaf node
      */
-    private void drawAllWallsOfASector(BSPLeaf node) {
+    private void drawAllWallsOfASector(MazePanel panel, BSPLeaf node) {
         List<Wall> allWalls = node.getAllWalls();
         // debug
         traverseWallSectorCounter++;
@@ -365,7 +364,7 @@ public class FirstPersonView {
         int i = 0;
         for (Wall wall: allWalls) {
             // draw rectangle
-            drawWall(wall);
+            drawWall(panel, wall);
             // debug
             if (deepDebug) {
                 dbg("                               ".substring(0, nesting) +
@@ -383,7 +382,7 @@ public class FirstPersonView {
      * Helper method for drawAllWallsOfASector.
      * @param wall whose seen attribute may be set to true
      */
-    private void drawWall(Wall wall) {
+    private void drawWall(MazePanel panel, Wall wall) {
         drawRectCounter++; // debug, counter
 
         // some notes:
@@ -413,8 +412,8 @@ public class FirstPersonView {
 
         // moved code for drawing bits and pieces into yet another method to
         // gain more clarity on what information is actually needed
-        mazePanel.setColor(wall.getColor());
-        boolean drawn = drawPolygons(x1, x2, y11, y12, y21, y22);
+        panel.setColor(wall.getColor());
+        boolean drawn = drawPolygons(panel, x1, x2, y11, y12, y21, y22);
 
         if (drawn && !wall.isSeen()) {
             wall.setSeen(true); // updates the wall
@@ -438,7 +437,7 @@ public class FirstPersonView {
      * @param y22
      * @return true if at least one polygon has been drawn, false otherwise
      */
-    private boolean drawPolygons(int x1, int x2, int y11, int y12, int y21, int y22) {
+    private boolean drawPolygons(MazePanel panel, int x1, int x2, int y11, int y12, int y21, int y22) {
         // debugging
         //System.out.println(drawrect_late_ct + " drawPieces: " + x1 + ", " + x2
         //		+ ", " + y11 + ", " + y12 + ", " + y21 + ", " + y22 );
@@ -493,7 +492,7 @@ public class FirstPersonView {
             // debug
             //System.out.println("polygon-x: " + xps[0] + ", " + xps[1] + ", " + xps[2] + ", " + xps[3]) ;
             //System.out.println("polygon-y: " + yps[0] + ", " + yps[1] + ", " + yps[2] + ", " + yps[3]) ;
-            mazePanel.addFilledPolygon(xps, yps, 4);
+            panel.addFilledPolygon(xps, yps, 4);
             // for debugging purposes, code will draw a red line around polygon
             // this makes individual walls visible
 			/*

@@ -24,7 +24,6 @@ public class MazePanel extends View implements P5PanelF21{
         canvas = new Canvas(bitmap);
         paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
-        myTestImage(canvas);
     }
 
     public MazePanel(Context context, AttributeSet attributeSet){
@@ -33,19 +32,12 @@ public class MazePanel extends View implements P5PanelF21{
         canvas = new Canvas(bitmap);
         paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
-        myTestImage(canvas);
-
     }
 
     @Override
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
-        paint.setColor(Color.RED);
-        paint.setStrokeWidth(3);
-        //canvas.drawRect(130, 130, 180, 180, paint);
-        //myTestImage();
         canvas.drawBitmap(bitmap, null, new Rect(0, 0, canvas.getWidth(), canvas.getHeight()), paint);
-
     }
 
     public Canvas bufferGraphics(){
@@ -159,18 +151,20 @@ public class MazePanel extends View implements P5PanelF21{
 
     @Override
     public void addBackground(float percentToExit) {
-        /**
         // black rectangle in upper half of screen
         // graphics.setColor(Color.black);
         // dynamic color setting:
-        bufferGraphics().setColor(getBackgroundColor(percentToExit, true));
-        graphics.fillRect(0, 0, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2);
+        //bufferGraphics().setColor(getBackgroundColor(percentToExit, true));
+        //graphics.fillRect(0, 0, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2);
         // grey rectangle in lower half of screen
         // graphics.setColor(Color.darkGray);
         // dynamic color setting:
-        graphics.setColor(getBackgroundColor(percentToExit, false));
-        graphics.fillRect(0, Constants.VIEW_HEIGHT/2, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2);
-         */
+        //graphics.setColor(getBackgroundColor(percentToExit, false));
+        //graphics.fillRect(0, Constants.VIEW_HEIGHT/2, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2);
+        setColor(Color.BLACK);
+        addFilledRectangle(0, 0, canvas.getWidth(), canvas.getHeight()/2);
+        setColor(Color.DKGRAY);
+        addFilledRectangle(0, canvas.getHeight()/2, canvas.getWidth(), canvas.getHeight()/2);
     }
 
     /**
@@ -321,7 +315,7 @@ public class MazePanel extends View implements P5PanelF21{
         }
          */
     }
-
+    /**
     private void myTestImage(Canvas c){
         addFilledRectangle(0,0,50,100);
         paint.setColor(Color.GREEN);
@@ -334,5 +328,5 @@ public class MazePanel extends View implements P5PanelF21{
         paint.setColor(Color.BLACK);
         addLine(0, 0, 400, 400);
         addArc(300, 300, 50, 50, 0, 180);
-    }
+    }*/
 }
