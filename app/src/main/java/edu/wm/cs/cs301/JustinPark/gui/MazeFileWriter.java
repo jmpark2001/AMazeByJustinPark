@@ -2,6 +2,7 @@ package edu.wm.cs.cs301.JustinPark.gui;
 
 import edu.wm.cs.cs301.JustinPark.generation.BSPNode;
 import edu.wm.cs.cs301.JustinPark.generation.Floorplan;
+import edu.wm.cs.cs301.JustinPark.generation.Singleton;
 
 import java.io.File;
 
@@ -41,9 +42,9 @@ public class MazeFileWriter {
      * @param startX is the x coordinate of the starting position
      * @param startY is the y coordinate of the starting position
      */
-    public static void store(String filename, int width, int height, int rooms,
+    public static void store(String filename, int width, int height, boolean rooms,
                              int expected_partiters, BSPNode root, Floorplan cells,
-                             int[][] dists, int startX, int startY)
+                             int[][] dists, int startX, int startY, int seed, int manual)
     {
         try {
             // get a document
@@ -53,13 +54,13 @@ public class MazeFileWriter {
 
 
             // store data that characterizes the maze in the document
-            storeMaze(width, height, rooms, expected_partiters, root, cells, dists, startX, startY, doc);
+            storeMaze(width, height, rooms, expected_partiters, root, cells, dists, startX, startY, seed, manual, doc);
 
             // write the document content into resulting xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(filename));
+            StreamResult result = new StreamResult(new File(Singleton.path + filename));
 
             transformer.transform(source, result);
         } catch (ParserConfigurationException pce) {
@@ -81,9 +82,9 @@ public class MazeFileWriter {
      * @param startY the y coordinate of the starting position
      * @param doc the document to append the information to
      */
-    static void storeMaze(int width, int height, int rooms,
+    static void storeMaze(int width, int height, boolean rooms,
                           int expected_partiters, BSPNode root, Floorplan cells, int[][] dists,
-                          int startX, int startY, Document doc) {
+                          int startX, int startY, int seed, int manual, Document doc) {
         Element mazeXML = doc.createElement("Maze");
         doc.appendChild(mazeXML);
 
@@ -91,6 +92,10 @@ public class MazeFileWriter {
         MazeFileWriter.appendChild(doc, mazeXML, "sizeX", width) ;
         MazeFileWriter.appendChild(doc, mazeXML, "sizeY", height) ;
         MazeFileWriter.appendChild(doc, mazeXML, "roomNum", rooms) ;                 // TODO: check, unclear if this is truly necessary
+        MazeFileWriter.appendChild(doc, mazeXML, "seed", seed);
+        System.out.println(manual);
+        System.out.println("WRITER MANUAL");
+        MazeFileWriter.appendChild(doc, mazeXML, "driver", manual);
         MazeFileWriter.appendChild(doc, mazeXML, "partiters", expected_partiters) ;  // TODO: check, unclear if this is truly necessary
         // cells
         int number = 0 ;

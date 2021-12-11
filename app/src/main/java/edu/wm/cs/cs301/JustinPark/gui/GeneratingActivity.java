@@ -15,6 +15,7 @@ import static edu.wm.cs.cs301.JustinPark.generation.Order.Builder.Boruvka;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.os.IResultReceiver;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -51,7 +52,8 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     private int skillLevel;
     private int seed = 13;
     private Order.Builder builder;
-    private String driver, algorithm;
+    private String algorithm;
+    private int manual = 0;
 
     Factory factory = new MazeFactory();
 
@@ -68,6 +70,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         algorithm = intent.getStringExtra(AMazeActivity.ALGORITHM);
         skillLevel = intent.getIntExtra(AMazeActivity.MAZE_SIZE, 0);
         hasRoom = intent.getBooleanExtra(AMazeActivity.ROOMS, false);
+        //willRevisit = intent.getBooleanExtra(AMazeActivity.REVISIT, false);
 
         switch (algorithm) {
             case "DFS":
@@ -220,6 +223,17 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     @Override
     public void deliver(Maze mazeConfig) {
         Singleton.mazeConfig = mazeConfig;
+        /*
+        if(!willRevisit){
+            Singleton.path = getApplicationContext().getFilesDir().getPath();
+            if(driverSelected.equals("Manual")){
+                manual = 1;
+            }
+            System.out.println("MANUAL");
+            System.out.println(manual);
+            MazeFileWriter.store("maze" + String.valueOf(skillLevel) + ".xml", mazeConfig.getWidth(), mazeConfig.getHeight(), hasRoom, 0, mazeConfig.getRootnode(), mazeConfig.getFloorplan(), mazeConfig.getMazedists().getAllDistanceValues(), mazeConfig.getStartingPosition()[0], mazeConfig.getStartingPosition()[1], seed, manual);
+        }
+         */
     }
 
     @Override
@@ -254,12 +268,50 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
                     @Override
                     public void run() {
                         Log.v(TAG, "hello there");
-                        retrieveChoices();
+                        //retrieveChoices();
                         threadIsDone = true;
+                        retrieveChoices();
                         start();
+                        /*
+                        if(willRevisit){
+                            System.out.println("YGYUGYGUYG");
+                            revisit();
+                        }
+                        else {
+                            System.out.println("START PLACE");
+                            retrieveChoices();
+                            start();
+                        }
+
+                         */
                     }
                 });
             }
         }).start();
+    }
+
+    public void revisit(){
+        Singleton.isOutside = false;
+        Singleton.state = new StatePlaying();
+        MazeFileReader reader = new MazeFileReader("maze" + String.valueOf(skillLevel) + ".xml");
+        seed = reader.getSeed();
+        manual = reader.getDriver();
+        System.out.println(manual);
+        factory = new MazeFactory();
+        StubOrder stubOrder = new StubOrder(skillLevel, builder, hasRoom, seed);
+        factory.order(stubOrder);
+        factory.waitTillDelivered();
+        Maze curConfig = stubOrder.getMaze();
+        //deliver(curConfig);
+        Singleton.mazeConfig = curConfig;
+        /*if(manual == 1){
+            Intent manual = new Intent(this, PlayManuallyActivity.class);
+            playManuallyActivity();
+        }
+        else{
+            Intent automatic = new Intent(this, PlayAnimationActivity.class);
+            playAutomaticActivity();
+        }*/
+        finish();
     }
 }

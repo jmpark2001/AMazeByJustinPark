@@ -29,10 +29,12 @@ public class AMazeActivity extends AppCompatActivity {
     private String mazeAlgorithm = "DFS";
     private String room = "Yes";
     private boolean hasRoom = false;
+    //private boolean willRevisit = false;
 
     public static final String ALGORITHM = "edu.wm.cs.cs301.JustinPark.ALGORITHM";
     public static final String MAZE_SIZE = "edu.wm.cs.cs301.JustinPark.MAZE_SIZE";
     public static final String ROOMS = "edu.wm.cs.cs301.JustinPark.ROOMS";
+    public static final String REVISIT = "edu.wm.cs.cs301.JustinPark.REVISIT";
 
 
     @Override
@@ -44,14 +46,14 @@ public class AMazeActivity extends AppCompatActivity {
         setAlgorithm();
 
         revisit = (Button) findViewById(R.id.revisit);
-        explore = (Button) findViewById(R.id.explore);
-        revisit.setOnClickListener(new View.OnClickListener(){
+        revisit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
+                //willRevisit = true;
                 moveToGeneratingActivity();
             }
         });
-
+        explore = (Button) findViewById(R.id.explore);
         explore.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -65,6 +67,7 @@ public class AMazeActivity extends AppCompatActivity {
         intent.putExtra(MAZE_SIZE, skillLevel);
         intent.putExtra(ROOMS, hasRoom);
         intent.putExtra(ALGORITHM, mazeAlgorithm);
+        //intent.putExtra(REVISIT, willRevisit);
         startActivity(intent);
     }
 
