@@ -17,6 +17,8 @@ import edu.wm.cs.cs301.JustinPark.generation.Singleton;
 
 public class PlayManuallyActivity extends AppCompatActivity {
     private static final String TAG = "PlayManuallyActivity";
+    public static final String PATH_LENGTH = "edu.wm.cs.cs301.JustinPark.PATH_LENGTH";
+    public static final String ENERGY_USED = "edu.wm.cs.cs301.JustinPark.ENERGY_USED";
     private Button up, left, right, jump, shortcut;
     private Switch map, solution, walls;
     MazePanel panel;
@@ -61,6 +63,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getBaseContext(), "Map Off", Toast.LENGTH_SHORT).show();
                 }
+                Singleton.state.keyDown(Constants.UserInput.TOGGLEFULLMAP, 0);
             }
         });
 
@@ -130,6 +133,8 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
     private void playWinningActivity(){
         Intent intent = new Intent(this, WinningActivity.class);
+        intent.putExtra(PATH_LENGTH, robot.getOdometerReading());
+        intent.putExtra(ENERGY_USED, manualDriver.getEnergyConsumption());
         startActivity(intent);
         finish();
     }
