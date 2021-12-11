@@ -18,7 +18,7 @@ public class WinningActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_winning);
 
-        mediaPlayer = MediaPlayer.create(WinningActivity.this, R.raw.holly);
+        mediaPlayer = MediaPlayer.create(WinningActivity.this, R.raw.wonderful);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
 

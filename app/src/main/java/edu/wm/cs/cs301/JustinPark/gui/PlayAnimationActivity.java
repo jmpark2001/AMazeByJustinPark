@@ -3,6 +3,7 @@ package edu.wm.cs.cs301.JustinPark.gui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -25,6 +26,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
     private ProgressBar energy;
     private Handler handler = new Handler();
     private String driver;
+    private MediaPlayer mediaPlayer;
     MazePanel panel;
     Robot robot = new ReliableRobot();
     RobotDriver robotDriver;
@@ -60,6 +62,10 @@ public class PlayAnimationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_animation);
+
+        mediaPlayer = MediaPlayer.create(PlayAnimationActivity.this, R.raw.holly);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
 
         panel = findViewById(R.id.mazePanel);
         Intent intent = getIntent();
@@ -120,6 +126,26 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 Singleton.state.keyDown(Constants.UserInput.TOGGLEFULLMAP, 0);
             }
         });
+    }
+
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        mediaPlayer.start();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        mediaPlayer.pause();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        mediaPlayer.stop();
+        mediaPlayer.release();
     }
 
     public void openWinningActivity() {
