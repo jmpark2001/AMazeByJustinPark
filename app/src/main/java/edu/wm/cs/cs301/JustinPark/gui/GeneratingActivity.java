@@ -13,6 +13,7 @@ import static edu.wm.cs.cs301.JustinPark.generation.Order.Builder.Prim;
 import static edu.wm.cs.cs301.JustinPark.generation.Order.Builder.Boruvka;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.os.IResultReceiver;
@@ -54,6 +55,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     private Order.Builder builder;
     private String algorithm;
     private int manual = 0;
+    private MediaPlayer mediaPlayer;
 
     Factory factory = new MazeFactory();
 
@@ -65,6 +67,10 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generating);
+
+        mediaPlayer = MediaPlayer.create(GeneratingActivity.this, R.raw.want);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
 
         Intent intent = getIntent();
         algorithm = intent.getStringExtra(AMazeActivity.ALGORITHM);
@@ -131,6 +137,25 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
             }
         });
 
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        mediaPlayer.start();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        mediaPlayer.pause();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        mediaPlayer.stop();
+        mediaPlayer.release();
     }
 
     public void retrieveChoices() {
