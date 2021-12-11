@@ -3,6 +3,7 @@ package edu.wm.cs.cs301.JustinPark.gui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.view.View;
@@ -36,6 +37,7 @@ public class AMazeActivity extends AppCompatActivity {
     public static final String ROOMS = "edu.wm.cs.cs301.JustinPark.ROOMS";
     public static final String REVISIT = "edu.wm.cs.cs301.JustinPark.REVISIT";
 
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,10 @@ public class AMazeActivity extends AppCompatActivity {
         setMazeSize();
         setRooms();
         setAlgorithm();
+
+        mediaPlayer = MediaPlayer.create(AMazeActivity.this, R.raw.meanone);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
 
         revisit = (Button) findViewById(R.id.revisit);
         revisit.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +66,25 @@ public class AMazeActivity extends AppCompatActivity {
                 moveToGeneratingActivity();
             }
         });
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        mediaPlayer.start();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        mediaPlayer.pause();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        mediaPlayer.stop();
+        mediaPlayer.release();
     }
 
     private void moveToGeneratingActivity(){

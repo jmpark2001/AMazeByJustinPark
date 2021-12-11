@@ -7,6 +7,7 @@ import edu.wm.cs.cs301.JustinPark.generation.Floorplan;
 import edu.wm.cs.cs301.JustinPark.generation.Distance;
 import edu.wm.cs.cs301.JustinPark.generation.Maze;
 import edu.wm.cs.cs301.JustinPark.generation.MazeContainer;
+import edu.wm.cs.cs301.JustinPark.generation.Singleton;
 import edu.wm.cs.cs301.JustinPark.generation.Wall;
 
 import java.io.File;
@@ -108,7 +109,7 @@ public class MazeFileReader {
     {
         try{
 
-            File fXmlFile = new File(filename);
+            File fXmlFile = new File(Singleton.path + filename);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(fXmlFile);
