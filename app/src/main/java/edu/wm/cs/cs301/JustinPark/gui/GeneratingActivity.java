@@ -57,6 +57,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
 
     // TAG for logcat messages
     private static final String TAG = "GeneratingActivity";
+    public static final String DRIVER = "edu.wm.cs.cs301.JustinPark.DRIVER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +158,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     public void playAutomaticActivity() {
         Intent intent = new Intent(this, PlayAnimationActivity.class);
         driverSpinner.setVisibility(View.GONE);
-        intent.putExtra("USER_CHOICE_DRIVER", driverSelected);
+        intent.putExtra(DRIVER, driverSelected);
         startActivity(intent);
         finish();
     }
